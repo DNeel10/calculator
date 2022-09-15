@@ -80,6 +80,12 @@ const modify = function(number, string) {
         } else {
             return number + ".";
         }   
+    } else if (string =='negative') {
+        if( displayValue == "") {
+            return "-"
+        } else if (result) {
+            return "-" + number.toString();
+        } 
     }
 }
 
@@ -133,18 +139,19 @@ for (let i = 0; i < buttons.length; i++) {
             if (result) {
                 result = modify(tempValue, e.target.id);
                 display(result);
+                displayValue = result;
 
             } else {
                 result = modify(displayValue, e.target.id);
                 console.log(result);
                 display(result);
+                displayValue = result;
             }
-
         })
     };
 }
 
-//BUG
+//BUG - SOLVED
 /*
 decimal currently only edits a number that is already displayed, and isn't able to be used prior to inputting other numbers
 press 3 then . and you get 0.3
