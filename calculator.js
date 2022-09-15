@@ -41,6 +41,7 @@ const divide = function divide(num1, num2) {
     }return num1 / num2
 }
 
+// DEPENDING ON WHICH OPERATOR IS SELECTED, USE A DIFFERENT CALCULATION
 let operate = function(num1, num2, op) {
     if (op == 'add') {
         return add(num1, num2);
@@ -53,6 +54,7 @@ let operate = function(num1, num2, op) {
     }
 }
 
+// CLEAR THE CALCULATOR AND RESET SO YOU CAN START OVER
 let clear = function() {
     displayValue = "0";
     tempValue = "";
@@ -61,10 +63,24 @@ let clear = function() {
     tempResult = "";
 }
 
-// DISPLAY
+// DISPLAY VALUES
 
 const display = function(string){
     displayZone.textContent = string;
+}
+
+// MODIFY THE NUMBER
+
+const modify = function(number, string) {
+    if (string == 'percent') {
+        return parseInt(number)/100;
+    } else if (string == 'decimal') {
+        if (displayValue == "") {
+            return "." 
+        } else {
+            return number + ".";
+        }   
+    }
 }
 
 // BUTTON CLICKS
@@ -74,7 +90,7 @@ the number should concatenate together until an "operator" type button is clicke
 ex. click on 9, 2, 7, the number being stored in displayValue should be 927.
 */
 for (let i = 0; i < buttons.length; i++) {
-    if (buttons[i].classList.contains('number')){
+    if (buttons[i].classList.contains('number')) {
         buttons[i].addEventListener('click', (e) => {
             if (displayValue == '0') {
                 displayValue = ""
@@ -85,7 +101,7 @@ for (let i = 0; i < buttons.length; i++) {
             displayValue = displayValue.concat(e.target.textContent);
             display((displayValue));
         });
-    } else if (buttons[i].classList.contains('operator')){
+    } else if (buttons[i].classList.contains('operator')) {
         buttons[i].addEventListener('click', (e) =>{
             if (!result) {
                 tempValue = displayValue;
@@ -99,7 +115,7 @@ for (let i = 0; i < buttons.length; i++) {
                 display(e.target.textContent);
             }
         });
-    } else if (buttons[i].classList.contains('equals')){
+    } else if (buttons[i].classList.contains('equals')) {
         buttons[i].addEventListener('click', () => {
             tempValue = operate(tempValue, displayValue, operatorValue).toString();
             result = tempValue;
@@ -107,13 +123,42 @@ for (let i = 0; i < buttons.length; i++) {
             operatorValue = "";
             display(tempValue);
         });
-    } else if (buttons[i].classList.contains('clear')){
+    } else if (buttons[i].classList.contains('clear')) {
         buttons[i].addEventListener('click', () => {
                 clear();
                 display(displayValue);
             })
+    } else if (buttons[i].classList.contains('modifier')) {
+        buttons[i].addEventListener('click', (e) => {
+            if (result) {
+                result = modify(tempValue, e.target.id);
+                display(result);
+
+            } else {
+                result = modify(displayValue, e.target.id);
+                console.log(result);
+                display(result);
+            }
+
+        })
     };
 }
+
+//BUG
+/*
+decimal currently only edits a number that is already displayed, and isn't able to be used prior to inputting other numbers
+press 3 then . and you get 0.3
+should be able to press . first and then any number after it to create the decimal
+*/
+
+//BUG - SOLVED
+/*
+modifying a number shows the correct result ,but operating on the new modified number treats it as the previous number:
+ex. 3 + 3 = 6
+    modifying it with a % gives the result 0.06 (this is correct)
+    multiplying 0.06 by 100 should give me 6 again (expected Result) actual result is:
+    0.06 * 100 = 600 (the operation is treating the 0.06 still as 6)
+*/
 
 //BUG - SOLVED
 /* 
