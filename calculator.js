@@ -78,6 +78,9 @@ for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', (e) => {
             if (displayValue == '0') {
                 displayValue = ""
+            } else if (result && !operatorValue) {
+                result = "";
+                tempValue = "";
             }
             displayValue = displayValue.concat(e.target.textContent);
             display((displayValue));
@@ -101,6 +104,7 @@ for (let i = 0; i < buttons.length; i++) {
             tempValue = operate(tempValue, displayValue, operatorValue).toString();
             result = tempValue;
             displayValue = "";
+            operatorValue = "";
             display(tempValue);
         });
     } else if (buttons[i].classList.contains('clear')){
@@ -111,7 +115,7 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 
-//BUG
+//BUG - SOLVED
 /* 
 after getting a result, i can't currently start a new calculation with 2 brand new numbers.  the calculation continues with the "result" of the previous calculation even if i select 2 new numbers.
 ex. 2 + 3 = 5
