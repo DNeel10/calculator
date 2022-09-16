@@ -76,7 +76,7 @@ const modify = function(number, string) {
         return parseInt(number)/100;
     } else if (string == 'decimal') {
         if (displayValue == "") {
-            return "." 
+            return "." ;
         } else {
             return number + ".";
         }   
@@ -85,7 +85,9 @@ const modify = function(number, string) {
             return "-"
         } else if (result) {
             return "-" + number.toString();
-        } 
+        } else {
+            return `-${number}`;
+        }
     }
 }
 
@@ -98,14 +100,17 @@ ex. click on 9, 2, 7, the number being stored in displayValue should be 927.
 for (let i = 0; i < buttons.length; i++) {
     if (buttons[i].classList.contains('number')) {
         buttons[i].addEventListener('click', (e) => {
-            if (displayValue == '0') {
-                displayValue = ""
-            } else if (result && !operatorValue) {
-                result = "";
-                tempValue = "";
+            if (displayValue.length < 14){
+                if (displayValue == '0') {
+                    displayValue = ""
+                } else if (result && !operatorValue) {
+                    result = "";
+                    tempValue = "";
+                }
+                displayValue = displayValue.concat(e.target.textContent);
+                display((displayValue));
+                console.log(displayValue.length);
             }
-            displayValue = displayValue.concat(e.target.textContent);
-            display((displayValue));
         });
     } else if (buttons[i].classList.contains('operator')) {
         buttons[i].addEventListener('click', (e) =>{
@@ -123,11 +128,16 @@ for (let i = 0; i < buttons.length; i++) {
         });
     } else if (buttons[i].classList.contains('equals')) {
         buttons[i].addEventListener('click', () => {
-            tempValue = operate(tempValue, displayValue, operatorValue).toString();
+            tempValue = operate(tempValue, displayValue, operatorValue);
             result = tempValue;
             displayValue = "";
             operatorValue = "";
-            display(tempValue);
+            if (tempValue > 9E14){
+                display(tempValue.toExponential(4).toString());
+            } else {
+                display(tempValue.toString());
+            }
+
         });
     } else if (buttons[i].classList.contains('clear')) {
         buttons[i].addEventListener('click', () => {
@@ -143,13 +153,26 @@ for (let i = 0; i < buttons.length; i++) {
 
             } else {
                 result = modify(displayValue, e.target.id);
-                console.log(result);
                 display(result);
                 displayValue = result;
             }
-        })
+        });
     };
 }
+
+//ADD HOVER EFFECT
+
+buttons.forEach((button) => {
+    button.addEventListener('mouseenter', (e) => {
+        e.target.style.border = '2px solid orange';
+    });
+});
+
+buttons.forEach((button) => {
+    button.addEventListener('mouseleave', (e) => {
+        e.target.style.border = '';
+    });
+});
 
 //BUG - SOLVED
 /*
