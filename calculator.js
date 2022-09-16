@@ -81,13 +81,21 @@ const modify = function(number, string) {
             return number + ".";
         }   
     } else if (string =='negative') {
-        if( displayValue == "") {
-            return "-"
+        if (displayValue){
+            return number * -1;
+        } else if (displayValue == "") {
+            return "-";
         } else if (result) {
             return "-" + number.toString();
-        } else {
-            return `-${number}`;
         }
+
+        // if( displayValue == "") {
+        //     return "-"
+        // } else if (result) {
+        //     return "-" + number.toString();
+        // } else {
+        //     return `-${number}`;
+        // }
     }
 }
 
