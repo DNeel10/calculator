@@ -37,7 +37,7 @@ const multiply = function multiply(num1, num2){
 
 const divide = function divide(num1, num2) {
     if(num2 == 0){
-        return 'yeah, no';
+        return 'Yeah, no.';
     }return num1 / num2
 }
 
@@ -88,14 +88,6 @@ const modify = function(number, string) {
         } else if (result) {
             return "-" + number.toString();
         }
-
-        // if( displayValue == "") {
-        //     return "-"
-        // } else if (result) {
-        //     return "-" + number.toString();
-        // } else {
-        //     return `-${number}`;
-        // }
     }
 }
 
