@@ -46,6 +46,8 @@ body{
     text-align: end;
     margin: 0px;
     color: white;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .button {

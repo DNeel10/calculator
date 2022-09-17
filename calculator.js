@@ -38,7 +38,7 @@ const multiply = function multiply(num1, num2){
 const divide = function divide(num1, num2) {
     if(num2 == 0){
         return 'Yeah, no.';
-    }return num1 / num2
+    } return parseFloat((num1 / num2).toFixed(12));
 }
 
 // DEPENDING ON WHICH OPERATOR IS SELECTED, USE A DIFFERENT CALCULATION
@@ -117,8 +117,11 @@ for (let i = 0; i < buttons.length; i++) {
             if (!result) {
                 tempValue = displayValue;
                 operatorValue = e.target.id;
+                tempResult = operate(tempValue, displayValue, operatorValue);
+                console.log(`tempREsult: ${tempResult}`)
                 displayValue = ""
-                display(e.target.textContent);  
+                display(e.target.textContent);
+
             }  else {
                 tempValue = result;
                 operatorValue = e.target.id;
