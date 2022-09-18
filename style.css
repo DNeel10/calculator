@@ -46,7 +46,7 @@ body{
     text-align: end;
     margin: 0px;
     color: white;
-    word-wrap: break-word;
+    word-break: normal;
     overflow: hidden;
 }
 

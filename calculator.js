@@ -15,6 +15,7 @@ const numbers = document.querySelectorAll('.number');
 const clearBtn = document.querySelector('#clear');
 const modifiers = document.querySelectorAll('.modifier');
 
+// displayZone.maxLenght = 14;
 
 
 let displayValue = "";
@@ -70,7 +71,7 @@ let clear = function() {
 // DISPLAY VALUES
 
 const display = function(string){
-    displayZone.textContent = string;
+    displayZone.textContent = string
 }
 
 // MODIFY THE NUMBER
@@ -78,12 +79,6 @@ const display = function(string){
 const modify = function(number, string) {
     if (string == 'percent') {
         return parseInt(number)/100;
-    } else if (string == 'decimal') {
-        if (displayValue == "") {
-            return "." ;
-        } else {
-            return number + ".";
-        }   
     } else if (string =='negative') {
         if (displayValue){
             return number * -1;
@@ -110,6 +105,8 @@ numbers.forEach((number) => {
             } else if (result && !operatorValue) {
                 result = "";
                 previousValue = "";
+            } else if (e.target.textContent === '.' && displayValue.includes('.')){
+                return
             }
             displayValue = displayValue.concat(e.target.textContent);
             display((displayValue));
@@ -119,33 +116,24 @@ numbers.forEach((number) => {
 
 operators.forEach((operator) => {
     operator.addEventListener('click', (e) =>{
-        if (previousValue) {
+        if (previousValue && !result) {
             previousValue = operate(previousValue, displayValue, operatorValue);
             operatorValue = e.target.id;
             displayValue = '';
             display(previousValue);
-        } else {
+        } else if (!result) {
             operatorValue = e.target.id;
             previousValue = displayValue;
             displayValue = '';
             display(e.target.textContent);
+        } else {
+            operatorValue = e.target.id;
+            previousValue = result;
+            displayValue = '';
+            display(e.target.textContent);
         }
-
     })
 })
-    //         if (!result) {
-    //             previousValue = displayValue;
-    //             operatorValue = e.target.id;
-    //             displayValue = ""
-    //             display(e.target.textContent);
-    //         } else {
-    //             previousValue = result;
-    //             operatorValue = e.target.id;
-    //             displayValue = "";
-    //             display(e.target.textContent);
-    //         }
-    //     });
-    // });
 
 equals.addEventListener('click', () => {
     previousValue = operate(previousValue, displayValue, operatorValue);
@@ -155,7 +143,7 @@ equals.addEventListener('click', () => {
     if (previousValue > 9E13){
         display(previousValue.toExponential(4).toString());
     } else {
-        display(result);
+        display(result.toString());
     }
 })
 
