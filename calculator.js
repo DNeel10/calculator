@@ -76,17 +76,11 @@ const display = function(string){
 
 // MODIFY THE NUMBER
 
-const modify = function(number, string) {
-    if (string == 'percent') {
-        return parseInt(number)/100;
-    } else if (string =='negative') {
-        if (displayValue){
-            return number * -1;
-        } else if (displayValue == "") {
-            return "-";
-        } else if (result) {
-            return "-" + number.toString();
-        }
+const changePercent = function(number) {
+    if (typeof(number) == 'number') {
+        return parseFloat((number/100).toFixed(12));
+    } else if (typeof(number) == 'string') {
+        return parseFloat((number/100).toFixed(12));
     }
 }
 
@@ -154,17 +148,24 @@ clearBtn.addEventListener('click', () => {
 
 modifiers.forEach((modifier) => {
     modifier.addEventListener('click', (e) => {
-        if (result) {
-            result = modify(previousValue, e.target.id);
-            display(result);
-            displayValue = result;
-        } else {
-            result = modify(displayValue, e.target.id);
-            display(result);
-            displayValue = result;
-        }
-    });
+        if(result) {
+            displayValue = changePercent(result);
+        }    
+        displayValue = changePercent(displayValue);
+        display(displayValue);
+    })
 })
+        // if (result) {
+        //     result = changePercent(result);
+        //     display(result);
+        //     previousValue = result;
+        // } else {
+        //     result = changePercent(displayValue)
+        //     display(result);
+        //     displayValue = result;
+//         }
+//     });
+// })
 
 //ADD HOVER EFFECT
 
