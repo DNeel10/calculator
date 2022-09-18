@@ -78,9 +78,11 @@ const display = function(string){
 
 const changePercent = function(number) {
     if (typeof(number) == 'number') {
-        return parseFloat((number/100).toFixed(12));
+        return parseFloat((number/100).toFixed(14));
     } else if (typeof(number) == 'string') {
-        return parseFloat((number/100).toFixed(12));
+        return parseFloat((number/100).toFixed(14));
+    } else if (!number){
+        return number;
     }
 }
 
@@ -148,24 +150,15 @@ clearBtn.addEventListener('click', () => {
 
 modifiers.forEach((modifier) => {
     modifier.addEventListener('click', (e) => {
-        if(result) {
+        if(!result) {
+            displayValue = changePercent(displayValue);
+        } else {
             displayValue = changePercent(result);
-        }    
-        displayValue = changePercent(displayValue);
+            result = displayValue
+        }
         display(displayValue);
     })
 })
-        // if (result) {
-        //     result = changePercent(result);
-        //     display(result);
-        //     previousValue = result;
-        // } else {
-        //     result = changePercent(displayValue)
-        //     display(result);
-        //     displayValue = result;
-//         }
-//     });
-// })
 
 //ADD HOVER EFFECT
 
