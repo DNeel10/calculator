@@ -8,13 +8,17 @@
 
 // INITIALIZE VARIABLES
 const buttons = document.querySelectorAll('.button');
-const operator = document.querySelectorAll('.operator');
+const operators = document.querySelectorAll('.operator');
 const displayZone = document.querySelector('.display');
 const equals = document.querySelector('.equals');
+const numbers = document.querySelectorAll('.number');
+const clearBtn = document.querySelector('#clear');
+const modifiers = document.querySelectorAll('.modifier');
+
 
 
 let displayValue = "";
-let tempValue = "";
+let previousValue = "";
 let operatorValue = "";
 let result = "";
 let tempResult = "";
@@ -32,7 +36,7 @@ const subtract = function subtract(num1, num2){
 }
 
 const multiply = function multiply(num1, num2){
-    return num1 * num2
+    return parseFloat((num1 * num2).toFixed(10));
 }
 
 const divide = function divide(num1, num2) {
@@ -57,7 +61,7 @@ let operate = function(num1, num2, op) {
 // CLEAR THE CALCULATOR AND RESET SO YOU CAN START OVER
 let clear = function() {
     displayValue = "0";
-    tempValue = "";
+    previousValue = "";
     operatorValue = "";
     result = "";
     tempResult = "";
@@ -97,71 +101,68 @@ when a button is pressed, store the number as a string into a variable displayVa
 the number should concatenate together until an "operator" type button is clicked.
 ex. click on 9, 2, 7, the number being stored in displayValue should be 927.
 */
-for (let i = 0; i < buttons.length; i++) {
-    if (buttons[i].classList.contains('number')) {
-        buttons[i].addEventListener('click', (e) => {
-            if (displayValue.length < 14){
-                if (displayValue == '0') {
-                    displayValue = ""
-                } else if (result && !operatorValue) {
-                    result = "";
-                    tempValue = "";
-                }
-                displayValue = displayValue.concat(e.target.textContent);
-                display((displayValue));
-                console.log(displayValue.length);
+
+numbers.forEach((number) => {
+    number.addEventListener('click', (e) => {
+        if (displayValue.length < 14){
+            if (displayValue == '0') {
+                displayValue = ""
+            } else if (result && !operatorValue) {
+                result = "";
+                previousValue = "";
             }
-        });
-    } else if (buttons[i].classList.contains('operator')) {
-        buttons[i].addEventListener('click', (e) =>{
+            displayValue = displayValue.concat(e.target.textContent);
+            display((displayValue));
+        }
+    }) 
+})
+
+operators.forEach((operator) => {
+    operator.addEventListener('click', (e) =>{
             if (!result) {
-                tempValue = displayValue;
+                previousValue = displayValue;
                 operatorValue = e.target.id;
-                tempResult = operate(tempValue, displayValue, operatorValue);
-                console.log(`tempREsult: ${tempResult}`)
                 displayValue = ""
                 display(e.target.textContent);
-
-            }  else {
-                tempValue = result;
+            } else {
+                previousValue = result;
                 operatorValue = e.target.id;
                 displayValue = "";
                 display(e.target.textContent);
             }
         });
-    } else if (buttons[i].classList.contains('equals')) {
-        buttons[i].addEventListener('click', () => {
-            tempValue = operate(tempValue, displayValue, operatorValue);
-            result = tempValue;
-            displayValue = "";
-            operatorValue = "";
-            if (tempValue > 9E14){
-                display(tempValue.toExponential(4).toString());
-            } else {
-                display(tempValue.toString());
-            }
+    });
 
-        });
-    } else if (buttons[i].classList.contains('clear')) {
-        buttons[i].addEventListener('click', () => {
-                clear();
-                display(displayValue);
-            })
-    } else if (buttons[i].classList.contains('modifier')) {
-        buttons[i].addEventListener('click', (e) => {
-            if (result) {
-                result = modify(tempValue, e.target.id);
-                display(result);
-                displayValue = result;
+equals.addEventListener('click', () => {
+    previousValue = operate(previousValue, displayValue, operatorValue);
+    result = previousValue;
+    displayValue = "";
+    operatorValue = "";
+    if (previousValue > 9E13){
+        display(previousValue.toExponential(4).toString());
+    } else {
+        display(result.toString());
+    }
+})
 
-            } else {
-                result = modify(displayValue, e.target.id);
-                display(result);
-                displayValue = result;
-            }
-        });
-    };
-}
+clearBtn.addEventListener('click', () => {
+    clear();
+    display(displayValue);
+})
+
+modifiers.forEach((modifier) => {
+    modifier.addEventListener('click', (e) => {
+        if (result) {
+            result = modify(previousValue, e.target.id);
+            display(result);
+            displayValue = result;
+        } else {
+            result = modify(displayValue, e.target.id);
+            display(result);
+            displayValue = result;
+        }
+    });
+})
 
 //ADD HOVER EFFECT
 
