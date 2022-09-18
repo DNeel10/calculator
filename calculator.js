@@ -119,19 +119,33 @@ numbers.forEach((number) => {
 
 operators.forEach((operator) => {
     operator.addEventListener('click', (e) =>{
-            if (!result) {
-                previousValue = displayValue;
-                operatorValue = e.target.id;
-                displayValue = ""
-                display(e.target.textContent);
-            } else {
-                previousValue = result;
-                operatorValue = e.target.id;
-                displayValue = "";
-                display(e.target.textContent);
-            }
-        });
-    });
+        if (previousValue) {
+            previousValue = operate(previousValue, displayValue, operatorValue);
+            operatorValue = e.target.id;
+            displayValue = '';
+            display(previousValue);
+        } else {
+            operatorValue = e.target.id;
+            previousValue = displayValue;
+            displayValue = '';
+            display(e.target.textContent);
+        }
+
+    })
+})
+    //         if (!result) {
+    //             previousValue = displayValue;
+    //             operatorValue = e.target.id;
+    //             displayValue = ""
+    //             display(e.target.textContent);
+    //         } else {
+    //             previousValue = result;
+    //             operatorValue = e.target.id;
+    //             displayValue = "";
+    //             display(e.target.textContent);
+    //         }
+    //     });
+    // });
 
 equals.addEventListener('click', () => {
     previousValue = operate(previousValue, displayValue, operatorValue);
@@ -141,7 +155,7 @@ equals.addEventListener('click', () => {
     if (previousValue > 9E13){
         display(previousValue.toExponential(4).toString());
     } else {
-        display(result.toString());
+        display(result);
     }
 })
 
